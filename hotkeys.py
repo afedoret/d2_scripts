@@ -1,8 +1,12 @@
 from pynput import keyboard
 import sys
-#from keyboard_commands import *
 
-from pynput.keyboard import Key, Controller
+from pynput.keyboard import Key, Controller 
+
+
+from pynput.mouse import Button
+from pynput.mouse import Controller as mouse
+
 import time
 
 COMBINATIONS = [
@@ -15,28 +19,33 @@ COMBINATIONS = [
 
 def call_to_arms():
 
-	keyboard_com.press('w')
+	cont.press('w')
 	time.sleep(0.2)
-	keyboard_com.release('w')
+	cont.release('w')
+
 	time.sleep(0.5)
-	keyboard_com.press('e')
+	cont.press('e')
 	time.sleep(0.2)
-	keyboard_com.release('e')
+	cont.release('e')
+	right_click()
+
 	time.sleep(0.5)
-	keyboard_com.press('d')
+	cont.press('d')
 	time.sleep(0.2)
-	keyboard_com.release('d')
+	cont.release('d')
+	right_click()
+
 	time.sleep(0.5)
-	keyboard_com.press('w')
+	cont.press('w')
 	time.sleep(0.2)
-	keyboard_com.release('w')
+	cont.release('w')
 	print('complete')
 	time.sleep(2)
 
 def execute(COMBO):
 	#listener.stop()
 	if COMBO == 0:
-		#call_to_arms();
+		call_to_arms();
 		print(0)
 	elif COMBO == 1:
 		print(1)
@@ -60,6 +69,7 @@ def on_press(key):
 	
 
 def on_release(key):
+	current.clear()
 	if any([key in COMBO for COMBO in COMBINATIONS]):
 		current.clear()
 		print(f"the key {key} has been removed")
@@ -78,13 +88,20 @@ def get_index(key):
 			return iterations
 	return null
 
+def right_click():
+	mouse.press(Button.right)
+	time.sleep(0.1)
+	mouse.release(Button.right)
+
+
 ##################################################################################
 ############################## Running Code ######################################
 ##################################################################################
 
 current = set()
-keyboard_com = Controller()
+cont = Controller()
+mouse = mouse()
+
 
 with keyboard.Listener(on_press, on_release=on_release) as listener:
 	listener.join()
-
